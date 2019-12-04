@@ -1,0 +1,30 @@
+To setup the Bebop software:
+
+sudo apt-get install ros-melodic-parrot-arsdk
+
+In your ROS Workspace/src directory:
+1. git clone https://github.com/AutonomyLab/bebop_autonomy.git
+2. cd ..
+3. catkin_make
+
+For the following instructions, ROS_WS refers to your ROS workspace base directory:
+1. In ROS_WS/devel/include: sudo ln -s /opt/ros/melodic/include/parrot_arsdk parrot_arsdk
+2. In ROS_WS/devel/library: sudo ln -s /opt/ros/melodic/lib/parrot_arsdk parrot_arsdk
+3. In your ~/.bashrc file, add the following to the end, replacing "my_username" with your username:
+export LD_LIBRARY_PATH=/home/my_username/ROS/devel/lib/parrot_arsdk:$LD_LIBRARY_PATH
+
+In the bebop_autonomy/bebop_driver/launch directory, edit bebop_node.launch and change the following:
+  1. Set the drone_type argument to "bebop2" (instead of "bebop1")
+
+To run the Bebop ROS Node:
+  1. Start your Bebop2 drone by pressing the button on the back
+  2. Connect your computer to its WiFi network
+  3. Make sure you "source devel/setup.bash" from your ROS Workspace directory
+  3. roslaunch bebop_driver bebop_node.launch
+
+To test your connection to the Bebop2:
+  1. "rostopic list" will show the Bebop2 topics
+  2. Running "rosrun image_view image_view image:=/bebop/image_raw" will allow you to view the camera output
+
+Drone Documentation:
+https://buildmedia.readthedocs.org/media/pdf/bebop-autonomy/latest/bebop-autonomy.pdf
