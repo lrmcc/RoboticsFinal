@@ -2,39 +2,64 @@
 
 	https://git-scm.com/downloads
 
-2. Set up your username and email:
-	$ git config --global user.name "myNameHere"
-	$ git config --global user.email "myEmailHere@gmail.com"
+
+2. Set up your username and email from terminal (will be published with all commits for identification):
+
+	2.1 set user name:
+		$ git config --global user.name "myNameHere"
+	
+	2.2 set email:
+		$ git config --global user.email "myEmailHere@gmail.com"
+
 
 3. create a folder on your local computer 
 
-4. Within the folder intialize git: 
-	$ git init
+4. Within the folder, right click and open terminal or  cd to the folder, then intialize git: 
 
-5. Add your own branch:
-	$ git branch myBranchNameHere
+	4.1 Initializes git for the directory the terminal is in:
+		$ git init
+
+5. Add/Create a file(s) that will be edited ( will contain your content for contribution ), then add and commit locally, for example file fly.py:
+
+	5.1 After file is created or moved into the folder, check git status (not mandatory, just good to see what's happening):
+		$ git status
 	
-	5.1 Check what branches are on local machine, and asterisk will be beside current branch:
+	5.2 "Add" content, which means it is ready to be submitted, where submit is called commit:
+		$ git add fly.py
+
+	5.3 After add, check git status (not mandatory, just good to see what's happening):
+		$ git status
+
+	5.4 "Commit" content, which means is has been submitted:
+		$ git add fly.py
+	
+	5.5 After commit, check git status (not mandatory, just good to see what's happening):
+		$ git status
+
+
+6. Add your own branch:
+
+	6.1 Check existing branches (should only contain master)  (not mandatory, just good to see what's happening):
 		$ git branch
 
-	5.2 Switch branches if desired (the following example would switch to branch we created named myBranchNameHere):
+	6.2 create new branch (will be your branch)
+		$ git branch myBranchNameHere
+	
+	6.3 Check what branches are on local machine, and asterisk will be beside current branch (not mandatory, just good to see what's happening):
+		$ git branch
+
+	6.4 Switch  to your branch (the following example would switch to branch we created named myBranchNameHere):
 		$ git checkout myBranchNameHere
 
-6. Add our shared github repo as your remote repo:
-	$ git remote add origin https://github.com/lrmcc/RoboticsFinal.git
+7. Add our shared github repo as your remote repo:
+	
+	7.1 Set your remote repo:
+		$ git remote add origin https://github.com/lrmcc/RoboticsFinal.git
 
-7. Create/edit content for contribution, then add and commit locally, for example file fly.py:
-
-	7.1 "Add" content, which means it is staged for commiting
-		$ git add fly.py
-
-	7.2 "Commit"
-		$ git add fly.py
-
-8. When ready to "Push" branch content to our branchshared github repo, requires into github:
+8. When ready to "Push" (submit) branch content to our branchshared github repo, requires into github:
 		$ git push -u origin myBranchNameHere
 
-9. Group will decide together and merge master branch code
+9. Group will decide and merge master branch 
 
 	Thanks
 
