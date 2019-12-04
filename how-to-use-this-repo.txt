@@ -1,0 +1,61 @@
+1. Install git on your local computer. 
+
+	https://git-scm.com/downloads
+
+2. Set up your username and email:
+	$ git config --global user.name "myNameHere"
+	$ git config --global user.email "myEmailHere@gmail.com"
+
+3. create a folder on your local computer 
+
+4. Within the folder intialize git: 
+	$ git init
+
+5. Add your own branch:
+	$ git branch myBranchNameHere
+	
+	5.1 Check what branches are on local machine, and asterisk will be beside current branch:
+		$ git branch
+
+	5.2 Switch branches if desired (the following example would switch to branch we created named myBranchNameHere):
+		$ git checkout myBranchNameHere
+
+6. Add our shared github repo as your remote repo:
+	$ git remote add origin https://github.com/lrmcc/RoboticsFinal.git
+
+7. Create/edit content for contribution, then add and commit locally, for example file fly.py:
+
+	7.1 "Add" content, which means it is staged for commiting
+		$ git add fly.py
+
+	7.2 "Commit"
+		$ git add fly.py
+
+8. When ready to "Push" branch content to our branchshared github repo, requires into github:
+		$ git push -u origin myBranchNameHere
+
+9. Group will decide together and merge master branch code
+
+	Thanks
+
+	- lrmcc
+
+
+
+copy and pasted from empty github repo:
+
+…or create a new repository on the command line:
+
+echo "# RoboticsFinal" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/lrmcc/RoboticsFinal.git
+git push -u origin master
+
+
+
+…or push an existing repository from the command line:
+
+git remote add origin https://github.com/lrmcc/RoboticsFinal.git
+git push -u origin master
