@@ -2,10 +2,12 @@
 import cv2
 import math
 import numpy
+import time
+
 
 # colors should be in BGR, not RGB
 colorList = [(133,55,215),(188,214,221),(66,201,133)]
-threshold = 50
+threshold = 1
 
 
 blobDetectionResolution = (300,300)
@@ -119,13 +121,25 @@ def debug(bloblist,image):
 					(j == b.higherBoundingY and i >= b.lowerBoundingX and i <= b.higherBoundingX) or 
 					(j == b.lowerBoundingY and i >= b.lowerBoundingX and i <= b.higherBoundingX)):
 					img[i,j] = (255,255,255)#(colorList[b.maskValue - 1][0]*2.0,colorList[b.maskValue - 1][1]*2.0,colorList[b.maskValue - 1][2]*2.0)#colorList[b.maskValue - 1]
-					
+	# cv2.namedWindow( "Display window", WINDOW_AUTOSIZE );
 	cv2.imwrite('out.png',img)
+	if 'DISPLAY_IMAGE' in globals():
+		cv2.imshow("img", img)
+		cv2.waitKey(1)
+	
 
-
+# cv2.namedWindow( "img", WINDOW_AUTOSIZE );
 # testimage = cv2.imread('notes.JPG')
 # debug(analyzeImage(testimage),testimage)
-
+# while True:
+# 	pass
+# for i in range(50):
+# 	# time.sleep(1)
+# 	print(threshold)
+# 	debug(analyzeImage(testimage),testimage)
+# 	threshold += 5
+# cv2.waitKey()
+# cv2.destroyAllWindows()
 
 
 
