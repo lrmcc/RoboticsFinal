@@ -1,4 +1,4 @@
-# Program to cause the Bebop2 to take off, track a face, and land after a fixed interval
+# Program to cause the Bebop2 to take off, detect follow green PostIt Notes, and land upon recognizing pink PostIt Notes.
 
 import rospy
 from sensor_msgs.msg import Image
@@ -42,55 +42,6 @@ def img_callback(img_msg):
   FRAME_HEIGHT = last_image.shape[0]
 
 
-
-# def find_faces(cv_image):
-#   global face_detector, win, last_call
-  
-#   face_position = [None, None]
-
-#   faces = face_detector(cv_image, 1)
-#   if len(faces) > 0:
-#     print("Detections: {}".format(len(faces)))
-#     for i, d in enumerate(faces):
-#       print("Face {}: Left: {}, Top: {}, Right: {}, Bottom: {}".format(i, d.left(), d.top(), d.right(), d.bottom()))
-#       if i == 0: face_position = (.5 * (d.right() + d.left()) / FRAME_WIDTH, .5 * (d.bottom() + d.top()) / FRAME_HEIGHT)
-
-#   # Draw faces
-#   rects = dlib.rectangles()
-#   rects.extend([d for d in faces])
-#   win.clear_overlay()
-#   win.set_image(cv_image) 
-#   win.add_overlay(rects)
-
-#   return face_position
-
-# def adjust_drone_pos(face_pos):
-#   global drone_pub
-
-#   if face_pos[0] is None: return
-
-#   pos_update = Twist()
-
-#   if face_pos[0] < 0.4:
-#     # Turn CCW
-#     print("CCW")
-#     pos_update.angular.z = 0.2 # Turn Counterclockwise
-#   elif face_pos[0] > 0.6:
-#     # Turn CW
-#     print("CW")
-#     pos_update.angular.z = -0.2 # Turn Clockwise
-
-#   if face_pos[1] < 0.4:
-#     # Increase altitude
-#     print("Ascend")
-#     pos_update.linear.z = 0.1
-
-#   elif face_pos[1] > 0.6:
-#     # Reduce altitude
-#     print("Descend")
-#     pos_update.linear.z = -0.1
-
-#   drone_pub.publish(pos_update)
 
 def main():
   global last_image, drone_pub, landing_pub
