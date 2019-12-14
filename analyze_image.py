@@ -6,8 +6,9 @@ import time
 
 
 # colors should be in BGR, not RGB
-colorList = [(133,55,215),(188,214,221),(66,201,133)]
-threshold = 1
+#colorList = [(133,55,215),(188,214,221),(66,201,133)]
+colorList = [(202,230,155),(255,164,195)] # [(green),(pink)]
+threshold = 30
 
 
 blobDetectionResolution = (300,300)

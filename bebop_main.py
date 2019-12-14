@@ -8,12 +8,14 @@ import cv2 # To install: pip3 install opencv-contrib-python
 import cv_bridge # To install: sudo apt-get install ros-melodic-cv-bridge
 import dlib # To install: pip3 install dlib
 import time
+from path_planner import *
 from analyze_image import *
 DISPLAY_IMAGE = True
 
 
-FLIGHT_TIME = 5 # seconds
-FACE_REC_INTERVAL = 1 # seconds
+FLIGHT_TIME = 140 # seconds
+FACE_REC_INTERVAL = .8 # seconds
+PATH_PLAN_INTERVAL = .5
 FRAME_WIDTH = 428
 FRAME_HEIGHT = 240
 
@@ -23,6 +25,7 @@ win = dlib.image_window()
 last_image = None
 
 drone_pub = None
+landing_pub = None
 
 last_img_call = 0
 
@@ -39,33 +42,97 @@ def img_callback(img_msg):
   FRAME_HEIGHT = last_image.shape[0]
 
 
+
+# def find_faces(cv_image):
+#   global face_detector, win, last_call
+  
+#   face_position = [None, None]
+
+#   faces = face_detector(cv_image, 1)
+#   if len(faces) > 0:
+#     print("Detections: {}".format(len(faces)))
+#     for i, d in enumerate(faces):
+#       print("Face {}: Left: {}, Top: {}, Right: {}, Bottom: {}".format(i, d.left(), d.top(), d.right(), d.bottom()))
+#       if i == 0: face_position = (.5 * (d.right() + d.left()) / FRAME_WIDTH, .5 * (d.bottom() + d.top()) / FRAME_HEIGHT)
+
+#   # Draw faces
+#   rects = dlib.rectangles()
+#   rects.extend([d for d in faces])
+#   win.clear_overlay()
+#   win.set_image(cv_image) 
+#   win.add_overlay(rects)
+
+#   return face_position
+
+# def adjust_drone_pos(face_pos):
+#   global drone_pub
+
+#   if face_pos[0] is None: return
+
+#   pos_update = Twist()
+
+#   if face_pos[0] < 0.4:
+#     # Turn CCW
+#     print("CCW")
+#     pos_update.angular.z = 0.2 # Turn Counterclockwise
+#   elif face_pos[0] > 0.6:
+#     # Turn CW
+#     print("CW")
+#     pos_update.angular.z = -0.2 # Turn Clockwise
+
+#   if face_pos[1] < 0.4:
+#     # Increase altitude
+#     print("Ascend")
+#     pos_update.linear.z = 0.1
+
+#   elif face_pos[1] > 0.6:
+#     # Reduce altitude
+#     print("Descend")
+#     pos_update.linear.z = -0.1
+
+#   drone_pub.publish(pos_update)
+
 def main():
-  global last_image, drone_pub
+  global last_image, drone_pub, landing_pub
   rospy.init_node("FaceTracker")
   camera_sub = rospy.Subscriber("/bebop/image_raw", Image, img_callback,queue_size=1)
   drone_pub = rospy.Publisher("/bebop/cmd_vel", Twist, queue_size=1)
   takeoff_pub = rospy.Publisher("/bebop/takeoff", Empty, queue_size=1)
   landing_pub = rospy.Publisher("/bebop/land", Empty, queue_size=1)
 
+  camera_pub = rospy.Publisher("/bebop/camera_control", Twist, queue_size=1)
+
   # Wait until the camera starts giving us frames
   while last_image is None:
     time.sleep(0.5)
 
-  #takeoff_pub.publish(Empty())
+  takeoff_pub.publish(Empty())
   time.sleep(2.) # Give the drone time to take off!
+  camera_update = Twist()
+  camera_update.angular.y = -40
+  camera_pub.publish(camera_update)
 
   start_time = time.time()
+  blob_list = []
+  last_path_plan = time.time()
   while not rospy.is_shutdown() and time.time() - start_time < FLIGHT_TIME:
     if last_image is not None:
-      debug(analyzeImage(last_image),last_image)    
+      blob_list = analyzeImage(last_image)
+      #debug(blob_list,last_image)
+    if(time.time() - last_path_plan > PATH_PLAN_INTERVAL):
+      # drone_pub.publish(plan_path(blob_list))
+      plan_path(blob_list, drone_pub, landing_pub)
+      last_path_plan = time.time()
+
       last_image = None
 
       #adjust_drone_pos(face_position)    
 
-  #landing_pub.publish(Empty())
+  landing_pub.publish(Empty())
   print("Shutdown.")
 
   cv2.destroyAllWindows()
+
 
 
 if __name__ == '__main__':
